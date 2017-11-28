@@ -5,12 +5,10 @@
 //  Created by slcf888 on 2017/11/20.
 //  Copyright © 2017年 slcf888. All rights reserved.
 //  http://blog.csdn.net/icandyss/article/details/50298877  label
-
+//  http://www.cocoachina.com/ios/20171127/21331.html tableview的介绍
 #import "ViewController.h"
-#import "VideoView.h"
 #import "XianChengVC.h"
-@interface ViewController ()<VideoViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
-@property (nonatomic ,strong) VideoView *videoView;
+@interface ViewController ()<UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 @property (nonatomic ,strong) NSMutableArray<NSLayoutConstraint *> *array;
 @property (nonatomic ,strong) UISlider *videoSlider;
 @property (nonatomic ,strong) NSMutableArray<NSLayoutConstraint *> *sliderArray;
@@ -20,7 +18,7 @@
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor whiteColor]];
 //    [self initVideoView];
-    UILabel *mylabel =[[UILabel alloc]initWithFrame:CGRectMake(40, 500, 200, 100)];
+    UILabel *mylabel =[[UILabel alloc]initWithFrame:CGRectMake(40, 200, 200, 100)];
     [self.view addSubview:mylabel];
     NSString *text =@"标签文本10086";
     //设置标签文本
@@ -30,6 +28,48 @@
     //设置标签文本属性
     [attributeString setAttributes:@{NSForegroundColorAttributeName : [UIColor redColor],   NSFontAttributeName : [UIFont systemFontOfSize:17]} range:NSMakeRange(4, 3)];
     mylabel.attributedText = attributeString; //显示
+    
+    [self TextLabel];//改变字符串的颜色
+    [self TextString];//截取字符串 and 匹配字符串 or 分隔字符串 but 字符串分割
+}
+- (void)TextLabel
+{//改变字符串的颜色
+    UILabel *noteLabel =[[UILabel alloc]init];
+    noteLabel.frame =CGRectMake(40, 300, 300, 100);
+    noteLabel.textColor =[UIColor blackColor];
+    noteLabel.numberOfLines =2;
+    
+    NSMutableAttributedString *noteStr =[[NSMutableAttributedString alloc]initWithString:@"点击注册按钮，即表示你已同意隐私条款和服务协议"];
+    NSRange redRange =NSMakeRange([[noteStr string] rangeOfString:@"注册"].location,[[noteStr string] rangeOfString:@"注册"].length);
+    [noteStr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:redRange];
+    NSRange redRangeTwo =NSMakeRange([[noteStr string] rangeOfString:@"同意"].location, [[noteStr string] rangeOfString:@"同意"].length);
+    [noteStr addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:redRangeTwo];
+    
+    [noteLabel setAttributedText:noteStr];
+    [noteLabel sizeToFit];
+    [self.view addSubview:noteLabel];
+}
+- (void)TextString
+{//截取字符串
+    NSString *string =@"whatiswhoknow";
+    string =[string substringToIndex:7];//截取下标7之qian的字符串
+    NSLog(@"截取的值：%@",string);
+    string =[string substringFromIndex:2];//截取下标2之hou的字符串
+    NSLog(@"截取的值：%@",string);
+//匹配字符串
+    NSString *stringTwo =@"sdfghjkladf";
+    NSRange range =[stringTwo rangeOfString:@"f"];//匹配得到的下标
+    NSLog(@"rang:%@",NSStringFromRange(range));
+    stringTwo =[stringTwo substringWithRange:range];//截取范围类的字符串
+    NSLog(@"ok:%@",stringTwo);
+//    分隔字符串
+    NSString *stringThree =@"zxcvbnmcfghjk";
+    NSArray *array =[stringThree componentsSeparatedByString:@"m"];//从字符m中分隔2个元素的数组
+    NSLog(@"array:%@",array);
+//    字符串分割
+    NSString *str1 =@"1=2=3=4";
+    NSArray *Array =[str1 componentsSeparatedByString:@"="];
+    NSLog(@"%@",Array);
 }
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
@@ -40,8 +80,12 @@
         [self.navigationController pushViewController:vc animated:YES];
     }];
     UIAlertAction *phone =[UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"http://www.jb51.net/article/105897.htm");
-        
+        NSLog(@"http://www.jb51.net/article/105897.htm 第一次进比较慢");
+        UIImagePickerController *pickerImage =[[UIImagePickerController alloc]init];
+        pickerImage.sourceType =UIImagePickerControllerSourceTypePhotoLibrary;
+        pickerImage.allowsEditing =YES;
+        pickerImage.delegate =self;
+        [self presentViewController:pickerImage animated:YES completion:nil];
     }];
     UIAlertAction *cancel =[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         [self dismissViewControllerAnimated:YES completion:nil];
@@ -51,96 +95,11 @@
     [alert addAction:cancel];
     [self presentViewController:alert animated:YES completion:nil];
 }
-- (void)initVideoView {
-    
-    //NSString *path = [[NSBundle mainBundle] pathForResource:@"some" ofType:@"mp4"];//这个时播放本地的，播放本地的时候还需要改VideoView.m中的代码
-    NSString *path = @"http://static.tripbe.com/videofiles/20121214/9533522808.f4v.mp4";
-    _videoView = [[VideoView alloc] initWithUrl:path delegate:self];
-    _videoView.someDelegate = self;
-    [_videoView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.view addSubview:_videoView];
-    [self initVideoSlider];
-    
-    if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact) {
-        [self installLandspace];
-    } else {
-        [self installVertical];
-    }
-}
-- (void)installVertical {
-    if (_array != nil) {
-        [self.view removeConstraints:_array];
-        [_array removeAllObjects];
-        [self.view removeConstraints:_sliderArray];
-        [_sliderArray removeAllObjects];
-    } else {
-        _array = [NSMutableArray array];
-        _sliderArray = [NSMutableArray array];
-    }
-    id topGuide = self.topLayoutGuide;
-    NSDictionary *dic = @{@"top":@100,@"height":@180,@"edge":@20,@"space":@80};
-    [_array addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_videoView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_videoView)]];
-    [_array addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(edge)-[_videoSlider]-(edge)-|" options:0 metrics:dic views:NSDictionaryOfVariableBindings(_videoSlider)]];
-    [_array addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[topGuide]-(top)-[_videoView(==height)]-(space)-[_videoSlider]" options:0 metrics:dic views:NSDictionaryOfVariableBindings(_videoView,topGuide,_videoSlider)]];
-    [self.view addConstraints:_array];
-    
-    
-    
-}
-- (void)installLandspace {
-    if (_array != nil) {
-        
-        [self.view removeConstraints:_array];
-        [_array removeAllObjects];
-        
-        [self.view removeConstraints:_sliderArray];
-        [_sliderArray removeAllObjects];
-    } else {
-        
-        _array = [NSMutableArray array];
-        _sliderArray = [NSMutableArray array];
-    }
-    
-    id topGuide = self.topLayoutGuide;
-    NSDictionary *dic = @{@"edge":@20,@"space":@30};
-    
-    [_array addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_videoView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_videoView)]];
-    [_array addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[topGuide][_videoView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_videoView,topGuide)]];
-    [self.view addConstraints:_array];
-    
-    [_sliderArray addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(edge)-[_videoSlider]-(edge)-|" options:0 metrics:dic views:NSDictionaryOfVariableBindings(_videoSlider)]];
-    [_sliderArray addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_videoSlider]-(space)-|" options:0 metrics:dic views:NSDictionaryOfVariableBindings(_videoSlider)]];
-    [self.view addConstraints:_sliderArray];
-}
-- (void)initVideoSlider {
-    
-    _videoSlider = [[UISlider alloc] init];
-    [_videoSlider setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [_videoSlider setThumbImage:[UIImage imageNamed:@"sliderButton"] forState:UIControlStateNormal];
-    [self.view addSubview:_videoSlider];
-    
-}
-- (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator {
-    
-    [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
-    [coordinator animateAlongsideTransition:^(id <UIViewControllerTransitionCoordinatorContext> context) {
-        
-        if (newCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact) {
-            [self installLandspace];
-        } else {
-            [self installVertical];
-        }
-        [self.view setNeedsLayout];
-    } completion:nil];
-    
-}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
-#pragma mark -
-- (void)flushCurrentTime:(NSString *)timeString sliderValue:(float)sliderValue {
-    _videoSlider.value = sliderValue;
-}
+
     // Do any additional setup after loading the view, typically from a nib.
 
 

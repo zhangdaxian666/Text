@@ -19,7 +19,6 @@
 		5541BF911FC2B20200A20281 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5541BF901FC2B20200A20281 /* main.m */; };
 		5541BF9B1FC2B20200A20281 /* AprojectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5541BF9A1FC2B20200A20281 /* AprojectTests.m */; };
 		5541BFA61FC2B20200A20281 /* AprojectUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5541BFA51FC2B20200A20281 /* AprojectUITests.m */; };
-		5541BFB51FC2B27C00A20281 /* VideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5541BFB41FC2B27C00A20281 /* VideoView.m */; };
 		5541BFB91FC2B7B100A20281 /* PushViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5541BFB81FC2B7B100A20281 /* PushViewController.m */; };
 		5541BFBC1FC2B7E300A20281 /* CustomCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5541BFBB1FC2B7E300A20281 /* CustomCollectionViewCell.m */; };
 		5541BFBF1FC2B81200A20281 /* CustCollectionViewlayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5541BFBE1FC2B81200A20281 /* CustCollectionViewlayout.m */; };
@@ -68,8 +67,6 @@
 		5541BFA11FC2B20200A20281 /* AprojectUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AprojectUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5541BFA51FC2B20200A20281 /* AprojectUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AprojectUITests.m; sourceTree = "<group>"; };
 		5541BFA71FC2B20200A20281 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5541BFB31FC2B27C00A20281 /* VideoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoView.h; sourceTree = "<group>"; };
-		5541BFB41FC2B27C00A20281 /* VideoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoView.m; sourceTree = "<group>"; };
 		5541BFB71FC2B7B100A20281 /* PushViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PushViewController.h; sourceTree = "<group>"; };
 		5541BFB81FC2B7B100A20281 /* PushViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PushViewController.m; sourceTree = "<group>"; };
 		5541BFBA1FC2B7E300A20281 /* CustomCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomCollectionViewCell.h; sourceTree = "<group>"; };
@@ -155,8 +152,6 @@
 				5541BF821FC2B20200A20281 /* AppDelegate.m */,
 				5541BF841FC2B20200A20281 /* ViewController.h */,
 				5541BF851FC2B20200A20281 /* ViewController.m */,
-				5541BFB31FC2B27C00A20281 /* VideoView.h */,
-				5541BFB41FC2B27C00A20281 /* VideoView.m */,
 				5558A4A61FC52BCB00922EB5 /* 多线程 */,
 				552C12411FC405380057D863 /* 线程一张图片 */,
 				552C12371FC3FDDC0057D863 /* tableview加载plist 文件 */,
@@ -346,7 +341,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5541BFB51FC2B27C00A20281 /* VideoView.m in Sources */,
 				5541BFBF1FC2B81200A20281 /* CustCollectionViewlayout.m in Sources */,
 				5541BFB91FC2B7B100A20281 /* PushViewController.m in Sources */,
 				5541BF861FC2B20200A20281 /* ViewController.m in Sources */,

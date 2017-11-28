@@ -69,7 +69,7 @@
     if (!cell) {
         cell =[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
     }
-    //右边尖头
+    //右边尖头 
     cell.accessoryType =UITableViewCellAccessoryDisclosureIndicator;
     TaskNsobject *app = self.apps[indexPath.row];
     cell.textLabel.text = app.name;
